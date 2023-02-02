@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) {
+		mapGenerator.generateAndPrintMap();//here for test reasons
 		SpringApplication.run(BackendApplication.class, args);
 	}
 

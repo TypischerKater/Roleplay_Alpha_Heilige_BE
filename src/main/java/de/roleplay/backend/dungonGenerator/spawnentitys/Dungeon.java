@@ -41,8 +41,10 @@ public class Dungeon {
 		for (int i = 0; i < numMonster; i++) {
 			int monsterRoom = rand.nextInt(numRooms);
 			Room room = rooms.get(monsterRoom);
+			i--;
 			if (dungeon[room.getRow()][room.getCol()] != 'P') {
 				dungeon[room.getRow()][room.getCol()] = 'M';
+				i++;
 			}
 		}
 	}
@@ -53,8 +55,10 @@ public class Dungeon {
 		for (int i = 0; i < numTraps; i++) {
 			int TrapRoom = rand.nextInt(numRooms);
 			Room room = rooms.get(TrapRoom);
+			i--;
 			if (dungeon[room.getRow()][room.getCol()] != 'P') {
 				dungeon[room.getRow()][room.getCol()] = 'T';
+				i++;
 			}
 		}
 	}
@@ -65,8 +69,10 @@ public class Dungeon {
 		for (int i = 0; i < numArtifacts; i++) {
 			int artifactRoom = rand.nextInt(numRooms);
 			Room room = rooms.get(artifactRoom);
+			i--;
 			if (dungeon[room.getRow()][room.getCol()] != 'P') {
 				dungeon[room.getRow()][room.getCol()] = 'A';
+				i++;
 			}
 		}
 	}

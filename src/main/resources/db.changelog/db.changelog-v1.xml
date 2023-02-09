@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1" author="rrott">
+        <createTable tableName="player">
+            <column name="player_id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="game_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="character_class" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="character_race" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="health_points" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="intelligence" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="strength" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="constitution" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wisdom" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dexterity" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="game">
+            <column name="game_id" type="uuid">
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+            <column name="game_master_id" type="uuid">
+                <constraints primaryKey="false"/>
+            </column>
+            <column name="map" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_turn" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="turn_order" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

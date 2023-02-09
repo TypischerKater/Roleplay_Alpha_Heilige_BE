@@ -5,6 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet id="1" author="rrott">
+        <sql>CREATE TYPE character_class_enum AS ENUM ('MAGE','FIGHTER','CLERIC','THIEF')</sql>
+        <sql>CREATE TYPE character_race_enum AS ENUM ('DWARF','ELF','HOBBIT')</sql>
         <createTable tableName="player">
             <column name="player_id" type="uuid">
                 <constraints primaryKey="true"/>
@@ -15,10 +17,10 @@
             <column name="game_id" type="uuid">
                 <constraints nullable="false"/>
             </column>
-            <column name="character_class" type="ENUM('MAGE','FIGHTER','CLERIC','THIEF')">
+            <column name="character_class" type="character_class_enum">
                 <constraints nullable="false"/>
             </column>
-            <column name="character_Race" type="ENUM('DWARF','ELF','HOBBIT')">
+            <column name="character_Race" type="character_race_enum">
                 <constraints nullable="false"/>
             </column>
             <column name="health_Points" type="int">
@@ -40,6 +42,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
         <createTable tableName="game">
             <column name="game_id" type="uuid">
                 <constraints primaryKey="true" unique="true"/>
@@ -47,10 +50,15 @@
             <column name="game_master_id" type="uuid">
                 <constraints primaryKey="false"/>
             </column>
-        </createTable>
-        
-        <createTable tableName="">
-            <column name=""></column>
+            <column name="map" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_Turn" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="turn_Order" type="text">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

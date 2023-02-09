@@ -3,7 +3,7 @@ package de.roleplay.backend;
 import de.roleplay.backend.dungonGenerator.mapgen.bsp.BspMapCreator;
 import de.roleplay.backend.dungonGenerator.spawnentitys.Dungeon;
 
-public class mapGenerator {
+public class MapGenerator {
 
 	public static void generateAndPrintMap(){
 		int height = 100;

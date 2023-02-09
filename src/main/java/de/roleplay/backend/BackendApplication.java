@@ -23,8 +23,8 @@ public class BackendApplication {
 			System.out.println();
 		}
 
-		//mapGenerator.generateAndPrintMap();//here for test reasons
-		//SpringApplication.run(BackendApplication.class, args);
+		mapGenerator.generateAndPrintMap();//here for test reasons
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }

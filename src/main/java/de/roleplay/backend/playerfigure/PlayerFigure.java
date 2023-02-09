@@ -1,19 +1,15 @@
 package de.roleplay.backend.playerfigure;
 
+import de.roleplay.backend.playerfigure.race.Race;
 import lombok.Data;
 
 @Data
 public abstract class PlayerFigure {
     private String name;
-    private CharacterClass characterClass;
-    private int lifePoints;
-    private int intelligence;
-    private int strength;
-    private int constitution;
-    private int wisdom;
-    private int skill;
+    private Race race;
 
-    public PlayerFigure(String name) {
+    public PlayerFigure(String name, Race race) {
         setName(name);
+        setRace(race);
     }
 }

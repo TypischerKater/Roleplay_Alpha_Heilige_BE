@@ -9,4 +9,6 @@ import java.util.UUID;
 @Repository
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     void deleteByPlayerId(UUID id);
+
+    PlayerEntity findByPlayerId(UUID id);
 }

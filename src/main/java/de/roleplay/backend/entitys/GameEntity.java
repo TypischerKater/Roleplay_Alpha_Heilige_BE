@@ -20,11 +20,11 @@ public class GameEntity {
     @Id
     UUID gameId;
     @NonNull
-    UUID game_master_id;
+    UUID gameMasterId;
     @NonNull
     String map;
     @NonNull
-    UUID last_Turn;
+    UUID lastTurn;
     @NonNull
-    String turn_Order;
+    String turnOrder;
 }

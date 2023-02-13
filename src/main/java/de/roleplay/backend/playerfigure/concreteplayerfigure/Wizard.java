@@ -6,5 +6,7 @@ import de.roleplay.backend.playerfigure.race.Race;
 public class Wizard extends PlayerFigure {
     public Wizard(String name, Race race) {
         super(name, race);
+        setHealthPoints(8);
+        setAmorClass(10);
     }
 }

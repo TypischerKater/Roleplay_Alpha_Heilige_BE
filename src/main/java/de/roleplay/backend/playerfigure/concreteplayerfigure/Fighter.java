@@ -6,5 +6,7 @@ import de.roleplay.backend.playerfigure.race.Race;
 public class Fighter extends PlayerFigure {
     public Fighter(String name, Race race) {
         super(name, race);
+        setHealthPoints(10);
+        setAmorClass(13);
     }
 }

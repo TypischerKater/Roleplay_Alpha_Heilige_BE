@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RestController("/api/map")
+@RestController
+@RequestMapping("/api/map")
+@CrossOrigin("*")
 public class Map {
 
     private final PlayerRepository playerRepository;

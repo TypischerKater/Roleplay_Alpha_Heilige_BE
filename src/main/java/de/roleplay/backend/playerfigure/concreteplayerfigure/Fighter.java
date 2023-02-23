@@ -1,9 +1,13 @@
 package de.roleplay.backend.playerfigure.concreteplayerfigure;
 
 import de.roleplay.backend.playerfigure.PlayerFigure;
+import de.roleplay.backend.playerfigure.concreteplayerfigure.talent.TalentFighter;
 import de.roleplay.backend.playerfigure.race.Race;
 
 public class Fighter extends PlayerFigure {
+
+    private TalentFighter talent;
+
     public Fighter(String name, Race race) {
         super(name, race);
         setHealthPoints(10);

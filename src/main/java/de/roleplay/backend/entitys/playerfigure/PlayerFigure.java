@@ -1,6 +1,6 @@
-package de.roleplay.backend.playerfigure;
+package de.roleplay.backend.entitys.playerfigure;
 
-import de.roleplay.backend.playerfigure.race.Race;
+import de.roleplay.backend.entitys.playerfigure.race.Race;
 import lombok.Data;
 
 @Data

@@ -1,4 +1,4 @@
-package de.roleplay.backend.playerfigure.race;
+package de.roleplay.backend.entitys.playerfigure.race;
 
 public class Dwarf extends Race {
     public Dwarf() {

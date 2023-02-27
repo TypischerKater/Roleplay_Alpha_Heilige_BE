@@ -22,7 +22,7 @@ public class PlayerService {
     public PlayerEntity createPlayer(CreatePlayerDTO createPlayerDTO){
         int statsSum = createPlayerDTO.getConstitution() + createPlayerDTO.getIntelligence() + createPlayerDTO.getStrength() + createPlayerDTO.getWisdom() + createPlayerDTO.getDexterity();
         if(!(statsSum >= 60 && statsSum <= 80)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "the Stats are not vaild");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "the Stats are not valid");
         }
 
         return playerRepository.save(new PlayerEntity(createPlayerDTO));
@@ -31,7 +31,8 @@ public class PlayerService {
 
     public ArrayList<Integer> getSkillPoints(){
         ArrayList<Integer> stats = new ArrayList();
-        for(int i = 0; i <= 5; i++){
+        for(int i = 0; i < 5; i++){
+            System.out.println(i);
             stats.add( (int) Math.floor(Math.random() * 18) + 3);
         }
         while (stats.stream().mapToInt(a -> a).sum() <= 60){

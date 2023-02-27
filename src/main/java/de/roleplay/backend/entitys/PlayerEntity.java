@@ -35,6 +35,7 @@ public class PlayerEntity {
     int dexterity;
 
     public PlayerEntity(CreatePlayerDTO createPlayerDTO){
+        this.setUsername(createPlayerDTO.getUsername());
         this.setPlayerId(UUID.randomUUID());
         this.setGameId(createPlayerDTO.getGameId());
         this.setHealthPoints(createPlayerDTO.getHealthPoints());

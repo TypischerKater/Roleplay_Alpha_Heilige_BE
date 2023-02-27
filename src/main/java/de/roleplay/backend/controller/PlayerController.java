@@ -19,12 +19,12 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    @PostMapping("create")
+    @PostMapping("player/create")
     public PlayerEntity createPlayer(@RequestBody final CreatePlayerDTO createPlayerDTO){
         return playerService.createPlayer(createPlayerDTO);
     }
 
-    @GetMapping("generate/skillpoints")
+    @GetMapping("player/generate/skillpoints")
     public ArrayList<Integer> generateAndReturnSkillPoints(){
         return playerService.getSkillPoints();
     }

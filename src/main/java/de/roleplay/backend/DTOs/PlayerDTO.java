@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-public class CreatePlayerDTO {
+public class PlayerDTO {
+    private UUID PlayerId;
     private String username;
     private UUID gameId;
     private CharacterClass characterClass;

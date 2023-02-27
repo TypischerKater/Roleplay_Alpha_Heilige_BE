@@ -1,34 +1,27 @@
 package de.roleplay.backend.service;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.TaskExecutor;
+import de.roleplay.backend.entitys.GameEntity;
+import de.roleplay.backend.repositorys.GameRepository;
+import de.roleplay.backend.repositorys.PlayerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class GameService {
-    private final TaskExecutor taskExecutor;
+    private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
 
-    private Map<UUID, Game> tasks = new HashMap<>();
-
-    public GameService(@Qualifier("taskExecutor") TaskExecutor taskExecutor) {
-        this.taskExecutor = taskExecutor;
+    public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
+        this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
     }
 
-    public void addTask(Game task) {
-        tasks.put(task.getId(), task);
-        taskExecutor.execute(task);
-        System.out.println("Task added with ID: " + task.getId());
+    public GameEntity createGame() {
+        GameEntity gameEntity = new GameEntity();
+        gameEntity.setGameId(UUID.randomUUID());
+
+        return gameRepository.saveAndFlush(gameEntity);
     }
 
-    public void removeTaskById(UUID id) {
-        tasks.remove(id);
-    }
-
-    public Game getTaskById(UUID id) {
-        return tasks.get(id);
-    }
 }

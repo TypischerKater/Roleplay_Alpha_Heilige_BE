@@ -1,6 +1,5 @@
 package de.roleplay.backend.controller;
 
-import de.roleplay.backend.service.Game;
 import de.roleplay.backend.service.GameService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +16,9 @@ public class GameController {
         this.gameService = gameService;
     }
 
+
     @PostMapping("/create")
     public UUID createGame(){
-        Game newGame = new Game();
-        gameService.addTask(newGame);
-        return newGame.getId();
+        return gameService.createGame().getGameId();
     }
 }

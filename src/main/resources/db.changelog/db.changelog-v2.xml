@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="1" author="rrott">
+        <dropColumn tableName="game" columnName="last_turn"/>
+        <dropColumn tableName="game" columnName="turn_order"/>
+        <addColumn tableName="game">
+            <column name="last_turn" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="turn_order" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

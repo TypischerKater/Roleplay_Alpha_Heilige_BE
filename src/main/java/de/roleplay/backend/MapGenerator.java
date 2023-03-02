@@ -5,18 +5,16 @@ import de.roleplay.backend.dungonGenerator.spawnentitys.Dungeon;
 import de.roleplay.backend.entitys.Artefact;
 import de.roleplay.backend.entitys.Monsters;
 import de.roleplay.backend.entitys.PlayerEntity;
-import de.roleplay.backend.repositorys.PlayerRepository;
-import de.roleplay.backend.service.PlayerService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.UUID;
+
+import static de.roleplay.backend.entitys.MapType.*;
 
 @RequiredArgsConstructor
 public class MapGenerator {
 
-	private final PlayerService playerService;
 
 	public static void generateAndPrintMap(){
 		int height = 100;
@@ -25,7 +23,6 @@ public class MapGenerator {
 		bspMapCreator.setMinRoomSize(5);
 		bspMapCreator.setMaxIterations(6);
 		bspMapCreator.setMapDimension(height, width);
-		//bspMapCreator.setOut(System.out);
 		bspMapCreator.setOut(null);
 		char[][] dungon = bspMapCreator.createMap();
 		Dungeon d = new Dungeon(dungon, 15, 20, 10);
@@ -51,7 +48,6 @@ public class MapGenerator {
 		bspMapCreator.setMinRoomSize(5);
 		bspMapCreator.setMaxIterations(6);
 		bspMapCreator.setMapDimension(height, width);
-		//bspMapCreator.setOut(System.out);
 		bspMapCreator.setOut(null);
 		char[][] dungon = bspMapCreator.createMap();
 		Dungeon d = new Dungeon(dungon, monster, traps, artefacts);
@@ -96,171 +92,90 @@ public class MapGenerator {
 				switch (dungon[y][x]){
 					case '~':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								false,
-								false,
-								false,
+								OUTOFBOARDER,
 								null,
-								false,
 								null,
-								false,
-								false,
-								null,
-								true);
+								null
+						);
 						break;
 					case ',':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								true,
-								false,
-								false,
-								false,
+								ROOM,
 								null,
-								false,
 								null,
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case '.':
 						map[y][x] = new DungonMap(
-								false,
-								true,
-								false,
-								false,
-								false,
-								false,
+								FLORE,
 								null,
-								false,
 								null,
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case '#':
 						map[y][x] = new DungonMap(
-								true,
-								false,
-								false,
-								false,
-								false,
-								false,
+								WALL,
 								null,
-								false,
 								null,
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case '|':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								false,
-								true,
-								false,
+								DOORV,
 								null,
-								false,
 								null,
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case '-':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								true,
-								false,
-								false,
+								DOORH,
 								null,
-								false,
 								null,
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case 'M':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								false,
-								false,
-								true,
+								MONSTER,
 								generateMonster(),
-								false,
 								null,
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case 'A':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								false,
-								false,
-								false,
+								ARTEFACT,
 								null,
-								true,
 								generateArtefacts(),
-								false,
-								false,
-								null,
-								false
+								null
 						);
 						break;
 					case 'K':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								false,
-								false,
-								false,
+								KEY,
 								null,
-								false,
 								null,
-								true,
-								false,
-								null,
-								false
+								null
 						);
+						break;
+					case 'T':
+						map[y][x] = new DungonMap(
+								TRAP,
+							null,
+							null,
+							null
+					);
 						break;
 					case 'P':
 						map[y][x] = new DungonMap(
-								false,
-								false,
-								false,
-								false,
-								false,
-								false,
+								PLAYER,
 								null,
-								false,
 								null,
-								false,
-								true,
-								generatePlayer(),
-								false
+								generatePlayer()
 						);
 						break;
 					default:

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class GameEntity {
     UUID gameMasterId;
     @NonNull
     String map;
-    UUID lastTurn;
+    int lastTurn;
     String turnOrder;
 
     public GameEntity(CreateGameDTO createGameDTO) {
@@ -36,7 +37,7 @@ public class GameEntity {
         this.setGameId(UUID.randomUUID());
         this.setGameMasterId(gameMasterId);
         this.setMap(createGameDTO.getMap());
-        this.setLastTurn(null);
+        this.setLastTurn(-1);
         Map<Integer, UUID> turnOrder = new HashMap<>();
         turnOrder.put(0, gameMasterId);
         this.setTurnOrder(mapToString(turnOrder));

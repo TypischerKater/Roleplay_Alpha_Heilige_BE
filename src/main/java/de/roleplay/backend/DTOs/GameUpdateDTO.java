@@ -9,6 +9,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GameUpdateDTO {
     private String map;
-    private UUID lastTurn;
+    private int lastTurn;
     private String turnOrder;
 }

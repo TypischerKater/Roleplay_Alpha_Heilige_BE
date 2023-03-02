@@ -13,11 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.google.gson.Gson;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -43,7 +41,7 @@ public class GameService {
         PlayerEntity playerEntity = playerRepository.findByPlayerId(joinDTO.getPlayerID()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "there was no player found with this id"));
 
         System.out.println(game.getTurnOrder());
-        Map<Integer, UUID> turnOrder = this.convertToString(game.getTurnOrder());
+        Map<Integer, UUID> turnOrder = this.convertFromString(game.getTurnOrder());
         turnOrder.forEach((k,v) -> {
             if (v == playerEntity.getPlayerId()) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "player with this ID Already exists in this game");
@@ -58,7 +56,7 @@ public class GameService {
     }
 
 
-    public Map<Integer, UUID> convertToString(String mapAsString) {
+    public Map<Integer, UUID> convertFromString(String mapAsString) {
         mapAsString = mapAsString.replace("{", "");
         mapAsString = mapAsString.replace("}", "");
         Map<Integer, UUID> myMap = new HashMap<>();
@@ -71,8 +69,19 @@ public class GameService {
         return myMap;
     }
 
+
     public DungonMap[][] getMapByUuid(UUID uuid) {
         return gameRepository.getMapByGameId(uuid);
-        return null;
+}
+
+    public UUID getNextTurn(UUID gameID){
+        GameEntity game = this.gameRepository.findByGameId(gameID).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "no game exists by"));
+        int newTurn = game.getLastTurn() + 1;
+        Map<Integer, UUID> turnOrder = this.convertFromString(game.getTurnOrder());
+
+        if(turnOrder.size() > newTurn) {
+            newTurn = 0;
+        }
+        return turnOrder.get(newTurn);
     }
 }

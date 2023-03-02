@@ -2,6 +2,7 @@ package de.roleplay.backend.service;
 
 import de.roleplay.backend.DTOs.CreateGameDTO;
 import de.roleplay.backend.DTOs.JoinDTO;
+import de.roleplay.backend.DungonMap;
 import de.roleplay.backend.entitys.GameEntity;
 import de.roleplay.backend.entitys.PlayerEntity;
 import de.roleplay.backend.repositorys.GameRepository;
@@ -9,6 +10,7 @@ import de.roleplay.backend.repositorys.PlayerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.google.gson.Gson;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
@@ -66,6 +68,11 @@ public class GameService {
 
         return myMap;
     }
+
+
+    public DungonMap[][] getMapByUuid(UUID uuid) {
+        return gameRepository.getMapByGameId(uuid);
+}
 
     public UUID getNextTurn(UUID gameID){
         GameEntity game = this.gameRepository.findByGameId(gameID).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "no game exists by"));

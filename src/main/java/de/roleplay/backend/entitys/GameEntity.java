@@ -2,6 +2,7 @@ package de.roleplay.backend.entitys;
 
 import de.roleplay.backend.DTOs.CreateGameDTO;
 import de.roleplay.backend.DTOs.GameUpdateDTO;
+import de.roleplay.backend.DungonMap;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

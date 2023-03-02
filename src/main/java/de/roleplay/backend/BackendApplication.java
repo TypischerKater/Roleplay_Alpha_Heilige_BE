@@ -12,8 +12,9 @@ public class BackendApplication {
 		int monster = 15;
 		int traps = 20;
 		int artefacts = 10;
+		MapGenerator.generateAndPrintMap();
 
-		char[][] dungon = MapGenerator.generateAndReturnMap(height, width, monster, traps, artefacts);
+		/*DungonMap[][] dungon = MapGenerator.generateAndReturnMap(height, width, monster, traps, artefacts);
 
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
@@ -21,10 +22,10 @@ public class BackendApplication {
 			}
 
 			System.out.println();
-		}
+		}*/
 
-		MapGenerator.generateAndPrintMap();//here for test reasons
-		SpringApplication.run(BackendApplication.class, args);
+		//MapGenerator.generateAndPrintMap();//here for test reasons
+		//SpringApplication.run(BackendApplication.class, args);
 	}
 
 }

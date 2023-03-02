@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 
 @Service
 public class PlayerService {
@@ -41,6 +42,10 @@ public class PlayerService {
         }
 
         return stats;
+    }
+
+    public ArrayList<PlayerEntity> getPlayer(UUID gameID) {
+        return playerRepository.findByGameId(gameID);
     }
 
 }

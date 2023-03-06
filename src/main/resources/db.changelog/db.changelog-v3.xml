@@ -4,9 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-
-    <include file="db.changelog/db.changelog-v1.xml" />
-    <include file="db.changelog/db.changelog-v2.xml" />
-    <include file="db.changelog/db.changelog-v3.xml"/>
-
+    <changeSet id="3" author="rrott">
+        <dropColumn tableName="game" columnName="last_turn"/>
+        <addColumn tableName="game">
+            <column name="last_turn" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

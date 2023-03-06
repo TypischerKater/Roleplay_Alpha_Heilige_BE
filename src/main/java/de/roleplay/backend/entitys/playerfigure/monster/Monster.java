@@ -5,7 +5,7 @@ import de.roleplay.backend.entitys.playerfigure.race.Race;
 
 import java.util.Random;
 
-public class Monster extends PlayerFigure {
+public abstract class Monster extends PlayerFigure {
     public Monster(String name, Race race) {
         super(name, race);
     }

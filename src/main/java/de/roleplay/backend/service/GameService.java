@@ -3,7 +3,9 @@ package de.roleplay.backend.service;
 import de.roleplay.backend.DTOs.CreateGameDTO;
 import de.roleplay.backend.DTOs.JoinDTO;
 import de.roleplay.backend.DungonMap;
+import de.roleplay.backend.entitys.Coordinates;
 import de.roleplay.backend.entitys.GameEntity;
+import de.roleplay.backend.entitys.MapType;
 import de.roleplay.backend.entitys.PlayerEntity;
 import de.roleplay.backend.repositorys.GameRepository;
 import de.roleplay.backend.repositorys.PlayerRepository;
@@ -13,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.google.gson.Gson;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -21,10 +24,13 @@ import java.util.UUID;
 public class GameService {
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
+    private  Gson gson;
 
     public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
+        this.gson = new Gson();
+
     }
 
     public GameEntity createGame(CreateGameDTO createGameDTO) {
@@ -71,7 +77,7 @@ public class GameService {
 
 
     public DungonMap[][] getMapByUuid(UUID uuid) {
-        return gameRepository.getMapByGameId(uuid);
+        return gson.fromJson(gameRepository.getMapByGameId(uuid), DungonMap[][].class);
 }
 
     public UUID getNextTurn(UUID gameID){
@@ -83,5 +89,42 @@ public class GameService {
             newTurn = 0;
         }
         return turnOrder.get(newTurn);
+    }
+
+    @Transactional(rollbackOn = {ResponseStatusException.class})
+    public DungonMap[][] Move(UUID gameID, UUID characterID, Coordinates newPos) {
+
+        GameEntity game = gameRepository.findByGameId(gameID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "thre is no game with this id"));
+        PlayerEntity playerEntity = this.playerRepository.findByPlayerId(characterID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "you are not participating in this game"));
+
+        if(characterID == this.getNextTurn(gameID)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your Turn");
+        }
+        DungonMap[][] map = gson.fromJson(game.getMap(), DungonMap[][].class);
+
+        DungonMap oldPosPlayer = map[playerEntity.getCoordinates().getPosX()][playerEntity.getCoordinates().getPosY()];
+        DungonMap newPosPlayer = map[newPos.getPosX()][newPos.getPosY()];
+
+        if(!(newPosPlayer.getFieldType() == MapType.FLORE)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "this is no vaild field to sand on");
+        }
+
+        if(!newPosPlayer.getMonsters().isEmpty()){
+            //todo start fightRound when implemented
+        }
+        newPosPlayer.addPlayer(playerEntity);
+        oldPosPlayer.removePlayer(playerEntity);
+
+        map[playerEntity.getCoordinates().getPosX()][playerEntity.getCoordinates().getPosY()] = oldPosPlayer;
+        map[newPos.getPosX()][newPos.getPosY()] = newPosPlayer;
+
+        game.update(map);
+
+        gameRepository.saveAndFlush(game);
+        playerRepository.saveAndFlush(playerEntity);
+
+        return map;
     }
 }

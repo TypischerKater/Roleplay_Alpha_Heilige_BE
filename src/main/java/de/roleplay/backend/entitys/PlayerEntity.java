@@ -1,6 +1,7 @@
 package de.roleplay.backend.entitys;
 
 import de.roleplay.backend.DTOs.CreatePlayerDTO;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -34,6 +35,14 @@ public class PlayerEntity {
     @NonNull
     int dexterity;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "posX", column = @Column(name = "PosX")),
+            @AttributeOverride(name = "posY", column = @Column(name = "PosY"))
+    })
+    Coordinates coordinates;
+    Boolean isRested;
+
     public PlayerEntity(CreatePlayerDTO createPlayerDTO){
         this.setUsername(createPlayerDTO.getUsername());
         this.setPlayerId(UUID.randomUUID());
@@ -46,5 +55,10 @@ public class PlayerEntity {
         this.setIntelligence(createPlayerDTO.getIntelligence());
         this.setCharacterClass(createPlayerDTO.getCharacterClass());
         this.setCharacterRace(createPlayerDTO.getCharacterRace());
+        this.setIsRested(true);
+    }
+
+    public void updateCoordinates(Coordinates coordinates){
+     this.coordinates = coordinates;
     }
 }

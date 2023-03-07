@@ -27,7 +27,7 @@ public class Map {
 
     @GetMapping
     public String getMap(){
-        MapGenerator mg = new MapGenerator(playerService);
+        MapGenerator mg = new MapGenerator();
         DungonMap[][] dungon = mg.generateAndReturnMap(100, 100, 10, 10, 10);
         gson.fromJson(gson.toJson(dungon), DungonMap.class);
         return gson.toJson(dungon);

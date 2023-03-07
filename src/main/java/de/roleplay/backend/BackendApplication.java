@@ -25,7 +25,7 @@ public class BackendApplication {
 		}*/
 
 		//MapGenerator.generateAndPrintMap();//here for test reasons
-		//SpringApplication.run(BackendApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }

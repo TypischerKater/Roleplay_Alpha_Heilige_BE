@@ -13,10 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.criteria.CriteriaBuilder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -33,6 +30,7 @@ public class GameEntity {
     int lastTurn;
     String turnOrder;
 
+
     public GameEntity(CreateGameDTO createGameDTO) {
         UUID gameMasterId = UUID.randomUUID();
         this.setGameId(UUID.randomUUID());
@@ -43,6 +41,10 @@ public class GameEntity {
         turnOrder.put(0, gameMasterId);
         this.setTurnOrder(mapToString(turnOrder));
 
+    }
+
+    public void update(DungonMap[][] map){
+        this.setMap(Arrays.toString(map));
     }
 
 

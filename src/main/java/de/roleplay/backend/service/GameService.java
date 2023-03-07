@@ -70,7 +70,7 @@ public class GameService {
     }
 
 
-    public DungonMap[][] getMapByUuid(UUID uuid) {
+    public String getMapByUuid(UUID uuid) {
         return gameRepository.getMapByGameId(uuid);
 }
 
@@ -83,5 +83,10 @@ public class GameService {
             newTurn = 0;
         }
         return turnOrder.get(newTurn);
+    }
+
+    public boolean isGameMaster(UUID gameuuid, UUID spieleruuid) {
+        UUID gmUUID = gameRepository.getGameMasterIdByGameId(gameuuid);
+        return gmUUID.toString().equals(spieleruuid.toString());
     }
 }

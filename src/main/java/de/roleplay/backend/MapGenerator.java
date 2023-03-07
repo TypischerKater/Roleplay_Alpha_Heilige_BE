@@ -33,7 +33,6 @@ public class MapGenerator {
 
 		dungon = d.getDungeon();
 
-
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				System.out.print(dungon[y][x]);

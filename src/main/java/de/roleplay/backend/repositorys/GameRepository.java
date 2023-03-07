@@ -16,4 +16,7 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
 	@Query(value = "SELECT map FROM game WHERE gameId = :uuid", nativeQuery = true)
 	String getMapByGameId(UUID uuid);
+
+	@Query(value = "SELECT gameMasterId FROM game WHERE gameId = :uuid", nativeQuery = true)
+	UUID getGameMasterIdByGameId(UUID uuid);
 }

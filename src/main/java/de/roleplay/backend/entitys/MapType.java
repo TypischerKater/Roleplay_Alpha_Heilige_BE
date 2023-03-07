@@ -11,5 +11,6 @@ public enum MapType {
 	MONSTER,
 	ARTEFACT,
 	PLAYER,
-	TRAP
+	TRAP,
+	BLANK
 }

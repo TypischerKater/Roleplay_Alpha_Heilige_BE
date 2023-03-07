@@ -42,7 +42,6 @@ public class GameEntity {
         Map<Integer, UUID> turnOrder = new HashMap<>();
         turnOrder.put(0, gameMasterId);
         this.setTurnOrder(mapToString(turnOrder));
-
     }
 
 
@@ -57,10 +56,9 @@ public class GameEntity {
     }
 
     public String convertWithStream(Map<Integer, ?> map) {
-        String mapAsString = map.keySet().stream()
+        return map.keySet().stream()
                 .map(key -> key + "=" + map.get(key))
                 .collect(Collectors.joining(", ", "{", "}"));
-        return mapAsString;
     }
 
     public static String mapToString(Map<Integer, ?> map) {

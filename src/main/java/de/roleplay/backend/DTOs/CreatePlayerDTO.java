@@ -2,6 +2,7 @@ package de.roleplay.backend.DTOs;
 
 import de.roleplay.backend.entitys.CharacterClass;
 import de.roleplay.backend.entitys.CharacterRace;
+import de.roleplay.backend.entitys.Coordinates;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,6 @@ public class CreatePlayerDTO {
     private int constitution;
     private int wisdom;
     private int dexterity;
+
+    private Coordinates coordinates;
 }

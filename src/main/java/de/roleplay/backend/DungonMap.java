@@ -37,4 +37,8 @@ public class DungonMap {
 		//todo same as above
 		return this;
 	}
+	public DungonMap removeArtefacts(){
+		//todo needs to be implemented with artifact logic
+		return this;
+	}
 }

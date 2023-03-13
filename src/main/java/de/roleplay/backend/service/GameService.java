@@ -47,7 +47,7 @@ public class GameService {
         PlayerEntity playerEntity = playerRepository.findByPlayerId(joinDTO.getPlayerID()).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "there was no player found with this id"));
 
         System.out.println(game.getTurnOrder());
-        Map<Integer, UUID> turnOrder = this.convertFromString(game.getTurnOrder());
+        Map<Integer, UUID> turnOrder = game.convertFromString(game.getTurnOrder());
         turnOrder.forEach((k,v) -> {
             if (v == playerEntity.getPlayerId()) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "player with this ID Already exists in this game");
@@ -62,44 +62,19 @@ public class GameService {
     }
 
 
-    public Map<Integer, UUID> convertFromString(String mapAsString) {
-        mapAsString = mapAsString.replace("{", "");
-        mapAsString = mapAsString.replace("}", "");
-        Map<Integer, UUID> myMap = new HashMap<>();
-        String[] Pairs = mapAsString.split(",");
-        for (String pair: Pairs) {
-            String[] keyValue = pair.split("=");
-            myMap.put(Integer.valueOf(keyValue[0].replace(" ", "")),UUID.fromString(keyValue[1].replace(" ", "")));
-        }
-
-        return myMap;
-    }
-
-
     public DungonMap[][] getMapByUuid(UUID uuid) {
         return gson.fromJson(gameRepository.getMapByGameId(uuid), DungonMap[][].class);
 }
 
-    public UUID getNextTurn(UUID gameID){
-        GameEntity game = this.gameRepository.findByGameId(gameID).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "no game exists by"));
-        int newTurn = game.getLastTurn() + 1;
-        Map<Integer, UUID> turnOrder = this.convertFromString(game.getTurnOrder());
-
-        if(turnOrder.size() > newTurn) {
-            newTurn = 0;
-        }
-        return turnOrder.get(newTurn);
-    }
-
     @Transactional(rollbackOn = {ResponseStatusException.class})
-    public DungonMap[][] Move(UUID gameID, UUID characterID, Coordinates newPos) {
+    public DungonMap[][] move(UUID gameID, UUID characterID, Coordinates newPos) {
 
         GameEntity game = gameRepository.findByGameId(gameID)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "thre is no game with this id"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "there is no game with this id"));
         PlayerEntity playerEntity = this.playerRepository.findByPlayerId(characterID)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "you are not participating in this game"));
 
-        if(characterID == this.getNextTurn(gameID)){
+        if(characterID == game.getNextTurn()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your Turn");
         }
         DungonMap[][] map = gson.fromJson(game.getMap(), DungonMap[][].class);
@@ -108,7 +83,7 @@ public class GameService {
         DungonMap newPosPlayer = map[newPos.getPosX()][newPos.getPosY()];
 
         if(!(newPosPlayer.getFieldType() == MapType.FLORE)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "this is no vaild field to sand on");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "this is no vaild field to stand on");
         }
 
         if(!newPosPlayer.getMonsters().isEmpty()){
@@ -121,10 +96,32 @@ public class GameService {
         map[newPos.getPosX()][newPos.getPosY()] = newPosPlayer;
 
         game.update(map);
-
+        game = game.updateLastTurn(playerEntity.getPlayerId());
         gameRepository.saveAndFlush(game);
         playerRepository.saveAndFlush(playerEntity);
 
         return map;
+    }
+
+    public UUID getNextTurn(UUID gameId){
+        GameEntity game = this.gameRepository.findByGameId(gameId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "no game found with this Id"));
+        return game.getNextTurn();
+    }
+
+    @Transactional
+    public void rest(UUID gameID, UUID characterID){
+        GameEntity game = gameRepository.findByGameId(gameID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "there is no game with this id"));
+        PlayerEntity playerEntity = this.playerRepository.findByPlayerId(characterID)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "you are not participating in this game"));
+
+        if(characterID == game.getNextTurn()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not your Turn");
+        }
+
+        playerEntity.setIsRested(true);
+        game.updateLastTurn(playerEntity.getPlayerId());
+        gameRepository.saveAndFlush(game);
+        playerRepository.save(playerEntity);
     }
 }

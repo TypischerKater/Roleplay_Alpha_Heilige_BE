@@ -3,16 +3,13 @@ package de.roleplay.backend.entitys;
 import de.roleplay.backend.DTOs.CreateGameDTO;
 import de.roleplay.backend.DTOs.GameUpdateDTO;
 import de.roleplay.backend.DungonMap;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.yaml.snakeyaml.events.Event;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +33,7 @@ public class GameEntity {
         this.setGameId(UUID.randomUUID());
         this.setGameMasterId(gameMasterId);
         this.setMap(createGameDTO.getMap());
-        this.setLastTurn(-1);
+        this.updateLastTurn(gameMasterId);
         Map<Integer, UUID> turnOrder = new HashMap<>();
         turnOrder.put(0, gameMasterId);
         this.setTurnOrder(mapToString(turnOrder));
@@ -72,4 +69,45 @@ public class GameEntity {
         }
         return ret;
     }
+
+    public GameEntity updateLastTurn(UUID playerId){
+        Map<Integer,UUID> turnOrder = this.convertFromString(this.getTurnOrder());
+        turnOrder.forEach((k,v) -> {
+            if (v == playerId) {
+                this.lastTurn = k;
+            }
+        });
+        return this;
+    }
+
+    /**
+     * converts turnOrder map string to Map<Integer, UUID>
+     *
+     * @param playerMapAsString
+     * @return
+     */
+    public Map<Integer, UUID> convertFromString(String playerMapAsString) {
+        playerMapAsString = playerMapAsString.replace("{", "");
+        playerMapAsString = playerMapAsString.replace("}", "");
+        Map<Integer, UUID> myMap = new HashMap<>();
+        String[] Pairs = playerMapAsString.split(",");
+        for (String pair: Pairs) {
+            String[] keyValue = pair.split("=");
+            myMap.put(Integer.valueOf(keyValue[0].replace(" ", "")),UUID.fromString(keyValue[1].replace(" ", "")));
+        }
+
+        return myMap;
+    }
+
+        public UUID getNextTurn(){
+        int newTurn = this.getLastTurn() + 1;
+        Map<Integer, UUID> turnOrder = this.convertFromString(this.getTurnOrder());
+
+        if(turnOrder.size() > newTurn) {
+            newTurn = 0;
+        }
+        return turnOrder.get(newTurn);
+    }
+
+
 }
